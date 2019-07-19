@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+       ">
+	<camelContext xmlns="http://camel.apache.org/schema/spring">
+		<route>
+			<from uri="direct:start" />
+			<choice>
+				<when>
+					<simple>${body} contains 'Java'</simple>
+					<to uri="direct:javaArticles" />
+					<log message="Added to 'Java Articles'" />
+				</when>
+				<when>
+					<simple>${header.views} > 10000</simple>
+					<to uri="direct:popularArticles" />
+					<log message="Added to 'Popular Articles'" />
+				</when>
+				<otherwise>
+					<to uri="direct:allArticles" />
+					<log message="Added to 'All Articles'" />
+				</otherwise>
+			</choice>
+			<log message="Processing of ${body} done" />
+		</route>
+		<route>
+			<from uri="direct:javaArticles" />
+			<log message="Java Articles" />
+			<to uri="stream:out" />
+		</route>
+		<route>
+			<from uri="direct:popularArticles" />
+			<log message="Popular Articles" />
+			<to uri="stream:out" />
+		</route>
+		<route>
+			<from uri="direct:allArticles" />
+			<log message="All Articles" />
+			<to uri="stream:out" />
+		</route>
+	</camelContext>
+
+</beans>
