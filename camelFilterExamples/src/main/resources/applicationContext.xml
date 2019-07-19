@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+       ">
+	<bean id="camelArticles" class="com.javarticles.camel.filter.CamelArticles" />
+
+	<camelContext xmlns="http://camel.apache.org/schema/spring">
+		<route>
+			<from uri="atom:file:src/main/resources/feed.atom?splitEntries=true&amp;consumer.delay=1000" />
+			<to uri="seda:feeds"/>
+		</route>
+		<route>
+			<from uri="seda:feeds" />
+			<filter>
+				<method ref="camelArticles" method="filter" />
+				<to uri="seda:filteredArticles" />
+			</filter>
+		</route>
+		<route>
+			<from uri="seda:filteredArticles"/>
+			<to uri="stream:out"/>
+		</route>
+	</camelContext>
+</beans>

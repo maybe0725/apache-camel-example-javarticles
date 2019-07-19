@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+	<title>Java Articles</title>
+	<link href="http://javarticles.com/" />
+	<updated>2015-05-27T15:22:12Z</updated>
+	<author>
+		<name>Ram Satish</name>
+	</author>
+	<id>urn:uuid:50a76c30-d335-21d9-b93C-0003311e0af6</id>
+
+	<entry>
+		<title>Spring Integration</title>
+	</entry>
+
+	<entry>
+		<title>Spring Security</title>
+	</entry>
+
+	<entry>
+		<title>Java 8</title>
+	</entry>
+
+	<entry>
+		<title>Camel Multitask</title>
+	</entry>
+
+	<entry>
+		<title>Camel Wiretap</title>
+	</entry>
+
+	<entry>
+		<title>Camel Logger</title>
+	</entry>
+
+</feed>
