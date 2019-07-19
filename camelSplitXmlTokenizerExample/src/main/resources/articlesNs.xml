@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<c:articles xmlns:c="http://javarticles.com/schema/articles">
+  <c:article category="camel" title="Camel Splitter Example">
+    <c:tags>camel,eia</c:tags>
+    <c:authors>
+    <c:author>John</c:author>
+    </c:authors>
+  </c:article>
+  <c:article category="camel" title="Camel JMS Component">
+    <c:tags>camel,jms</c:tags>
+    <c:authors>
+      <c:author>John</c:author>
+      <c:author>Joe</c:author>
+    </c:authors>
+  </c:article>
+  <c:article category="spring" title="Spring JdbcTemplate">
+   <c:tags>spring,jdbc</c:tags>
+    <c:authors>
+      <c:author>Ram</c:author>
+      <c:author>Dean</c:author>
+    </c:authors>
+  </c:article>
+</c:articles>
