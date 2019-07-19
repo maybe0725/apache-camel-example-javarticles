@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+		http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+	<jdbc:initialize-database data-source="dataSource" enabled="true">
+		<jdbc:script location="classpath:db-schema.sql" />
+	</jdbc:initialize-database>
+
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost/cameldb?characterEncoding=UTF-8&amp;serverTimezone=UTC" />
+		<property name="username" value="root" />
+		<property name="password" value="admin" />
+	</bean>
+
+	<bean id="sampleGenerator" class="org.apache.camel.component.dataset.SimpleDataSet">
+		<property name="size" value="1" />
+		<property name="defaultHeaders">
+			<map>
+				<entry key="name" value="Camel Jdbc Insert Component" />
+				<entry key="category" value="Apache Camel" />
+				<entry key="tags" value="Camel,DSL,Jdbc" />
+			</map>
+		</property>
+	</bean>
+
+	<camelContext xmlns="http://camel.apache.org/schema/spring">
+		<route id="sample-generator-route">
+			<from uri="dataset:sampleGenerator" />
+			<setBody>
+				<constant>
+					insert into articles(name, category, tags, author) values
+					(:?name, :?category, :?tags, 'Admin');
+				</constant>
+			</setBody>
+			<to uri="jdbc:dataSource?useHeadersAsParameters=true" />
+			<to uri="log:insertLog?showHeaders=true" />
+		</route>
+	</camelContext>
+	
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<constructor-arg index="0" ref="dataSource"></constructor-arg>
+	</bean>
+		
+</beans>
